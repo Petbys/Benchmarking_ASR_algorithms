@@ -4,9 +4,9 @@ Benchmarking Ancestral Sequence Reconstruction algorithms with Ancient DNA
 ## ASR algorithms and software to be investigate
 
 |Name|Function|Availability|Language|
-|--|--|--|
-|PAML|||
-|FastML|||
+|--|--|--|--|
+|PAML||||
+|FastML||||
 |ARPIP|ASR using Poisson Indel Process, reconstructing ancestral sequences based on indels |https://github.com/acg-team/bpp-ARPI|C++|
 
 ## Data Availability
