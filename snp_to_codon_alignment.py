@@ -132,7 +132,7 @@ if __name__ == '__main__':
     annotation_dict = make_annotation_dict(read_annotation_file(annotation_path))
     get_sequence_lengths(full_align_path,headers)
     annotation_dict=get_ORF(annotation_dict,full_align_path,headers)
-    annotation_dict = codon_finder(make_info_df(snp_info_path),annotation_dict)
+    annotation_dict = codon_finder(make_info_df(snp_info_path,"Supp. table 14"),annotation_dict)
     codon = find_bases(annotation_dict)
 
     sequences = SeqIO.parse("test.fasta", 'fasta')
