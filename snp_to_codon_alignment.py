@@ -151,7 +151,10 @@ except IOError:
     print("Output file {} cannot be created".format(file_name))
     sys.exit(1)
 # Write the extracted sequences to a new FASTA file
+print(file_name)
+print(f_out)
 for header, sequence in extracted_sequences.items():
+    print(type(header),type(sequence))
     f_out.write(f'>{header}\n{sequence}\n')
 f_out.close()
 
