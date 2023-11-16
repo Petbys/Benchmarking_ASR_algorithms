@@ -39,6 +39,7 @@ def make_annotation_dict(annotation_file_list):
     return Annotation_dict
 
 def get_sequence_lengths(fasta_file,header):
+    header= header[0]
     for record in SeqIO.parse(fasta_file, "fasta"):
         if record.id == header[0:len(record.id)]:
             seq_len = len(record.seq)
