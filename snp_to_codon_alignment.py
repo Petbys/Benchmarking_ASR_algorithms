@@ -39,11 +39,11 @@ def make_annotation_dict(annotation_file_list):
     return Annotation_dict
 
 def get_sequence_lengths(fasta_file,header):
-    header= header[0]
-    for record in SeqIO.parse(fasta_file, "fasta"):
-        if record.id == header[0:len(record.id)]:
-            seq_len = len(record.seq)
-    return seq_len
+    #print(header)
+    #for record in SeqIO.parse(fasta_file, "fasta"):
+    #    if record.id == header[0:len(record.id)]:
+    #        seq_len = len(record.seq)
+    return 4653728
 
 def get_ORF(Annotation_dict,alignment_file,header):
     for key in Annotation_dict:
@@ -127,40 +127,43 @@ if __name__ == '__main__':
     snp_info_path = args.snp_info_path
     annotation_path = args.annotation_path
     out_dir = args.outdir
-
+    info_df = make_info_df(snp_info_path,"Supp. table 14" )
     headers = headers_from_fasta(snp_align_path)
     annotation_dict = make_annotation_dict(read_annotation_file(annotation_path))
     get_sequence_lengths(full_align_path,headers)
     annotation_dict=get_ORF(annotation_dict,full_align_path,headers)
-    annotation_dict = codon_finder(make_info_df(snp_info_path,"Supp. table 14"),annotation_dict)
+    annotation_dict = codon_finder(info_df,annotation_dict)
     codon = find_bases(annotation_dict)
+    print(codon)
+    full_align_sequence = SeqIO.parse(full_align_path, 'fasta')
+    # add refererence sequence so you dont have to iterate through all
+    snp_align_sequence = SeqIO.parse(snp_align_path, 'fasta')
+    extracted_sequences={}
 
-    sequences = SeqIO.parse("test.fasta", 'fasta')
-extracted_sequences={}
-
-for seq_record in sequences:
-    header = seq_record.id
-    sequence = str(seq_record.seq)
-    
-    # Extract sequences based on the provided locations
-    extracted_sequences[header] = ''.join(sequence[i - 1] for loc in codon for i in loc)
-os.makedirs(args.outdir, exist_ok=True)
-try:
-    file_name = "{}/{}_codon.fasta".format(args.outdir,os.path.splitext(os.path.basename(annotation_path)[0]))
-    f_out = open(file_name, 'w')
-except IOError:
-    print("Output file {} cannot be created".format(file_name))
-    sys.exit(1)
-# Write the extracted sequences to a new FASTA file
-print(file_name)
-print(f_out)
-for header, sequence in extracted_sequences.items():
-    print(type(header),type(sequence))
-    f_out.write(">{header}\n{sequence}\n".format(header,sequence))
-f_out.close()
-
-'''
-    for header in find_headers_in_fasta(data_dir):
-        f_out.write('{}:{}\n'.format(header,''))
+    for seq_record in snp_align_sequence:# iterate throuh snp
+        header = seq_record.id 
+        print(header)
+        if header in list(info_df.columns.to_list()):
+            sequence = str(seq_record.seq)
+            print(sequence)
+        # Extract sequences based on the provided locations
+            #print(codon)
+            extracted_sequences[header] = ''.join(sequence[i - 1] for loc in codon for i in loc) #add base from ref to new codon file
+    os.makedirs(args.outdir, exist_ok=True)
+    try:
+        file_name = "{}{}_codon.fasta".format(args.outdir,os.path.splitext(os.path.basename(annotation_path))[0])
+        f_out = open(file_name, 'w')
+    except IOError:
+        print("Output file {} cannot be created".format(file_name))
+        sys.exit(1)
+    # Write the extracted sequences to a new FASTA file
+    for header, sequence in extracted_sequences.items():
+        print(type(header),type(sequence))
+        f_out.write(">{header}\n{sequence}\n".format(header,sequence))
     f_out.close()
+
     '''
+        for header in find_headers_in_fasta(data_dir):
+            f_out.write('{}:{}\n'.format(header,''))
+        f_out.close()
+        '''
