@@ -127,14 +127,6 @@ if __name__ == '__main__':
     annotation_path = args.annotation_path
     out_dir = args.outdir
 
-    os.makedirs(args.outdir, exist_ok=True)
-    try:
-        file_name = "{}/{}_codon.fasta".format(args.outdir,os.path.splitext(os.path.basename(annotation_path)[0]))
-        f_out = open(file_name, 'w')
-    except IOError:
-        print("Output file {} cannot be created".format(file_name))
-        sys.exit(1)
-
     headers = headers_from_fasta(snp_align_path)
     annotation_dict = make_annotation_dict(read_annotation_file(annotation_path))
     get_sequence_lengths(full_align_path,headers)
@@ -151,7 +143,13 @@ for seq_record in sequences:
     
     # Extract sequences based on the provided locations
     extracted_sequences[header] = ''.join(sequence[i - 1] for loc in codon for i in loc)
-
+os.makedirs(args.outdir, exist_ok=True)
+try:
+    file_name = "{}/{}_codon.fasta".format(args.outdir,os.path.splitext(os.path.basename(annotation_path)[0]))
+    f_out = open(file_name, 'w')
+except IOError:
+    print("Output file {} cannot be created".format(file_name))
+    sys.exit(1)
 # Write the extracted sequences to a new FASTA file
 for header, sequence in extracted_sequences.items():
     f_out.write(f'>{header}\n{sequence}\n')
