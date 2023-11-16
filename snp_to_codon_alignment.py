@@ -155,7 +155,7 @@ print(file_name)
 print(f_out)
 for header, sequence in extracted_sequences.items():
     print(type(header),type(sequence))
-    f_out.write(f'>{header}{sequence}')
+    f_out.write(">{header}\n{sequence}\n".format(header,sequence))
 f_out.close()
 
 '''
