@@ -1,6 +1,18 @@
 # Benchmarking_ASR_algorithms
 Benchmarking Ancestral Sequence Reconstruction algorithms with Ancient DNA
 
+# Data preparation
+
+Intital files:
+
+|Yrsernia Pesti|full alignment|snp alignment|Information file|
+|--|--|--|--|
+|2022 spyrou|.fasta, 252 species|.fasta, 252 species|.xlsx, snp locations, decent|
+|2018 spyrou||.fasta||
+
+
+
+
 ## ASR algorithms and software to be investigate
 
 |Name|Function|Availability|Language|
