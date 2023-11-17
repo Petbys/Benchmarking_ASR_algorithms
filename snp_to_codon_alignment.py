@@ -161,7 +161,7 @@ if __name__ == '__main__':
             extracted_sequences[header] = ''.join(sequence[i - 1] for loc in codon for i in loc) #add base from ref to new codon file
     os.makedirs(args.outdir, exist_ok=True)
     try:
-        file_name = "{}{}_codon.fasta".format(args.outdir,os.path.splitext(os.path.basename(annotation_path))[0])
+        file_name = "{}{}_codon.fasta".format(args.outdir,os.path.splitext(os.path.basename(snp_align_path))[0])
         f_out = open(file_name, 'w')
     except IOError:
         print("Output file {} cannot be created".format(file_name))
