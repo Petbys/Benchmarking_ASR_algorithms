@@ -2,6 +2,10 @@
 Benchmarking Ancestral Sequence Reconstruction algorithms with Ancient DNA
 
 # Data preparation
+## protein coding sequences
+To benchmark the different algorithms over different datases, the data has to be in the same sequence space. As the main utility for ancestral sequence reconstruction lies in protein coding space the utilized data sets will be converted into protein coding space. 
+
+The _y. Sernia_ data sets consist of aligned snps between 250 different strains. To translate the snps into protein coding space, all corresponding codons to the snps are found using $snp_to_codon.py$. in this program the corresponding gene to each snp is found and based on its start, stop location and orientation the remaining codon bases are extracted from the reference genome to construct an codon alignment fasta file.
 
 Intital files:
 
@@ -9,6 +13,7 @@ Intital files:
 |--|--|--|--|
 |2022 spyrou|.fasta, 252 species|.fasta, 252 species|.xlsx, snp locations, decent|
 |2018 spyrou||.fasta||
+
 
 
 
@@ -40,4 +45,4 @@ Intital files:
 |--|--|
 |AncientMetagenomeDir| Curated collection of all published data using shotgun metagenomics or microbial genomes|
 
-### Virus
+### Bacteria
