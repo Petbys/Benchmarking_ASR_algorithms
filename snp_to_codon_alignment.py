@@ -135,17 +135,27 @@ if __name__ == '__main__':
     annotation_dict = codon_finder(info_df,annotation_dict)
     codon = find_bases(annotation_dict)
     print(codon)
-    full_align_sequence = SeqIO.parse(full_align_path, 'fasta')
+
+    
+
+    #full_align_sequence = SeqIO.parse(full_align_path, 'fasta')
+    #if re.search(pattern, input_string)
     # add refererence sequence so you dont have to iterate through all
     snp_align_sequence = SeqIO.parse(snp_align_path, 'fasta')
     extracted_sequences={}
+    for record in SeqIO.parse(full_align_path, 'fasta'):
+            header = record.id
+            if bool(re.search(r'^Reference\w+', header)):
+                sequence = str(record.seq)
 
     for seq_record in snp_align_sequence:# iterate throuh snp
         header = seq_record.id 
-        print(header)
         if header in list(info_df.columns.to_list()):
-            sequence = str(seq_record.seq)
-            print(sequence)
+            #sequence = str(seq_record.seq)
+            
+            #print(next(SeqIO.parse(full_align_path, "fasta")).seq)
+            #sequence = str(next(SeqIO.parse(full_align_path, "fasta")).seq)
+            #print(next(SeqIO.parse(full_align_path, "fasta")).id)
         # Extract sequences based on the provided locations
             #print(codon)
             extracted_sequences[header] = ''.join(sequence[i - 1] for loc in codon for i in loc) #add base from ref to new codon file
@@ -158,8 +168,9 @@ if __name__ == '__main__':
         sys.exit(1)
     # Write the extracted sequences to a new FASTA file
     for header, sequence in extracted_sequences.items():
-        print(type(header),type(sequence))
-        f_out.write(">{header}\n{sequence}\n".format(header,sequence))
+        #print(header,sequence)
+        #f_out.write(">{header}\n{sequence}\n".format(header,sequence))
+        f_out.write(f'>{header}\n{sequence}\n')
     f_out.close()
 
     '''
