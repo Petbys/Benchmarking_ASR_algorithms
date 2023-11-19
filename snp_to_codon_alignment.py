@@ -51,7 +51,8 @@ def get_ORF(Annotation_dict,alignment_file,header):
             Annotation_dict[key][3]=orf
             
         elif Annotation_dict[key][2] == "-":
-            orf = -1*(((get_sequence_lengths(alignment_file,header)-Annotation_dict[key][1]))%3+1)
+            #orf = -1*(((get_sequence_lengths(alignment_file,header)-Annotation_dict[key][1]))%3+1)
+            orf = -1*(((4653728-Annotation_dict[key][1]))%3+1)
             Annotation_dict[key][3]=orf
         #print(key, Annotation_dict[key])
     return Annotation_dict
