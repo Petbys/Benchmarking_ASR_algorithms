@@ -7,7 +7,6 @@ import re
 
 def make_info_df(snp_into_xslx,sub_table):
     return pd.read_excel(snp_into_xslx,sub_table,header=1, index_col=0)
-    
 
 def headers_from_fasta(fasta_file):
     headers = []
@@ -38,13 +37,13 @@ def make_annotation_dict(annotation_file_list):
             Annotation_dict[match_geneid.group(1)] = [int(match_location.group(1)),int(match_location.group(2)),match_direction.group(1),0,0]
     return Annotation_dict
 
-def get_sequence_lengths(fasta_file,header):
+def get_sequence_lengths(sequence): # sequence parser
     #print(header)
     #for record in SeqIO.parse(fasta_file, "fasta"):
     #    if record.id == header[0:len(record.id)]:
     #        seq_len = len(record.seq)
-    return 4653728
-
+    return len(record.seq)
+#4653728
 def get_ORF(Annotation_dict,alignment_file,header):
     for key in Annotation_dict:
         if Annotation_dict[key][2] == "+":
@@ -130,7 +129,7 @@ if __name__ == '__main__':
     info_df = make_info_df(snp_info_path,"Supp. table 14" )
     headers = headers_from_fasta(snp_align_path)
     annotation_dict = make_annotation_dict(read_annotation_file(annotation_path))
-    get_sequence_lengths(full_align_path,headers)
+    #get_sequence_lengths(full_align_path,headers)
     annotation_dict=get_ORF(annotation_dict,full_align_path,headers)
     annotation_dict = codon_finder(info_df,annotation_dict)
     codon = find_bases(annotation_dict)
