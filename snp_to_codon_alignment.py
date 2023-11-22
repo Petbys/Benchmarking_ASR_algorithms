@@ -206,6 +206,7 @@ if __name__ == '__main__':
     # Write the extracted sequences to a new FASTA file
     for header, sequence in extracted_sequences.items():
         #print(header,sequence)
+        
         #f_out.write(">{header}\n{sequence}\n".format(header,sequence))
         f_out.write(f'>{header}\n{sequence}\n')
     f_out.close()
