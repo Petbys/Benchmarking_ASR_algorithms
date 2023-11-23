@@ -115,10 +115,10 @@ def translate_sequence(sequence):
     protein_seq = dna_seq.translate()
     return str(protein_seq)
 
-def codon_to_aa(condon_seq):
-    condon_seq= SeqIO.parse(condon_seq,"fasta")
+def codon_to_aa(codon_seq):
+    codon_seq= SeqIO.parse(codon_seq,"fasta")
     extracted_sequences={}
-    for seq in condon_seq:
+    for seq in codon_seq:
         header = seq.id 
         extracted_sequence=seq.seq
         print(len(extracted_sequence))
@@ -234,7 +234,7 @@ if __name__ == '__main__':
         print("Output file {} cannot be created".format(filename_aa))
         sys.exit(1)
     # Write the extracted sequences to a new FASTA file
-    extracted_aa_sequences = codon_to_aa(extracted_sequences)
+    extracted_aa_sequences = codon_to_aa(filename_codon)
     for header, sequence in extracted_aa_sequences.items():
         #print(header,sequence)
         #f_out.write(">{header}\n{sequence}\n".format(header,sequence))
