@@ -10,9 +10,20 @@ import re
 def make_info_df(snp_into_xslx,sub_table):
     return pd.read_excel(snp_into_xslx,sub_table,header=1, index_col=0)
 
+def transform_elements(regex, elements):
+    pattern = re.compile(regex)
+    transformed_elements = []
+    for element in elements:
+        match = pattern.match(element)
+        if match:
+            transformed_elements.append(re.sub(r'\.[A-Za-z0-9]+$', '', element))
+        else:
+            transformed_elements.append(element)
+    return transformed_elements
+regex_pattern = r'^[A-Za-z0-9]+(?:\.[A-Za-z0-9]+)?$'
+
 def headers_from_fasta(fasta_file):
     headers = []
-    
     with open(fasta_file, 'r') as fasta_file:
         current_header = None
         for line in fasta_file:
@@ -21,7 +32,6 @@ def headers_from_fasta(fasta_file):
                 # If a line starts with '>', it's a header line
                 current_header = line
                 headers.append(current_header)
-    
     return [line.replace('>', '') for line in headers]
 
 def read_annotation_file(annotation_file):
@@ -155,7 +165,13 @@ if __name__ == '__main__':
     out_dir = args.outdir
     info_df = make_info_df(info_df_path,"Supp. table 14" )
     info_df = info_df.apply(lambda col: np.where(col == '.', info_df['CO92 Ref.'], col))
+    info_df.drop('CO92 Ref.', axis=1, inplace=True) # not in alignment file
+    info_df.drop('BSK001', axis=1, inplace=True) # combined into BSK001-003
+    info_df.drop('BSK003', axis=1, inplace=True)  # combined into BSK001-003
     headers = headers_from_fasta(snp_align_path)
+    headers = transform_elements(regex_pattern,headers)
+    info_df.columns = headers
+
     annotation_dict = make_annotation_dict(read_annotation_file(annotation_path))
     #get_sequence_lengths(full_align_path,headers)
     annotation_dict=get_ORF(annotation_dict,full_align_path,headers)
@@ -206,7 +222,7 @@ if __name__ == '__main__':
     # Write the extracted sequences to a new FASTA file
     for header, sequence in extracted_sequences.items():
         #print(header,sequence)
-        
+
         #f_out.write(">{header}\n{sequence}\n".format(header,sequence))
         f_out.write(f'>{header}\n{sequence}\n')
     f_out.close()
