@@ -121,9 +121,7 @@ def codon_to_aa(codon_seq):
     for seq in codon_seq:
         header = seq.id 
         extracted_sequence=seq.seq
-        print(len(extracted_sequence))
         extracted_sequences[header]=translate_sequence(extracted_sequence)
-        print(len(extracted_sequences[header]))
     return extracted_sequences
 
 if __name__ == '__main__':
