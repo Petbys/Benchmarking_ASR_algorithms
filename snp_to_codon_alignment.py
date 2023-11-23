@@ -167,8 +167,18 @@ if __name__ == '__main__':
     info_df.drop('BSK001', axis=1, inplace=True) # combined into BSK001-003
     info_df.drop('BSK003', axis=1, inplace=True)  # combined into BSK001-003
     headers = headers_from_fasta(snp_align_path)
-    headers = transform_elements(regex_pattern,headers)
-    info_df.columns = headers
+    headers_transform = transform_elements(regex_pattern,headers)
+    tranlation_headers ={}
+    for i in range(len(headers)):
+        if headers_transform[i] in tranlation_headers:
+            print('value already exists')
+            tranlation_headers[headers_transform[i]]=[tranlation_headers[headers_transform[i]]]
+            tranlation_headers[headers_transform[i]].append(headers[i])
+        tranlation_headers[headers_transform[i]]=headers[i]
+
+    print(len(tranlation_headers))
+    print(len(set(info_df.columns.to_list())  & set(headers_transform)))
+    info_df.columns = headers_transform
 
     annotation_dict = make_annotation_dict(read_annotation_file(annotation_path))
     #get_sequence_lengths(full_align_path,headers)
@@ -183,33 +193,36 @@ if __name__ == '__main__':
     # add refererence sequence so you dont have to iterate through all
     snp_align_sequence = SeqIO.parse(snp_align_path, 'fasta')
     extracted_sequences={}
+    
     for record in SeqIO.parse(full_align_path, 'fasta'):
             header = record.id
             if bool(re.search(r'^Reference\w+', header)):
+                print('sequence found')
                 sequence = str(record.seq)
+    n=0
+    for header_it in headers_transform:# iterate throuh snp
+        #if header in list(info_df.columns.to_list()):
+        #sequence = str(seq_record.seq)
 
-    for seq_record in snp_align_sequence:# iterate throuh snp
-        header = seq_record.id 
-    #if header in list(info_df.columns.to_list()):
-    #sequence = str(seq_record.seq)
-        if header in list(info_df.columns.to_list()):
-            extracted_sequence=""
-            for i in codon:
-                if i[4]=='+':
-                    if i[3]==0:
-                        extracted_sequence+=info_df.loc[i[0],header]+sequence[i[1]] +sequence[i[2]]
-                    elif i[3]==1:
-                        extracted_sequence+=sequence[i[0]] + info_df.loc[i[1],header]+sequence[i[2]]
-                    elif i[3]==2:  
-                        extracted_sequence+=sequence[i[0]] +sequence[i[1]]+ info_df.loc[i[2],header]
-                elif i[4]=='-':
-                    if i[3]==0:
-                        extracted_sequence+=reverse_complement(sequence[i[0]] +sequence[i[1]]+ info_df.loc[i[2],header])
-                    elif i[3]==1:
-                        extracted_sequence+=reverse_complement(sequence[i[0]] + info_df.loc[i[1],header]+sequence[i[2]])
-                    elif i[3]==2:
-                        extracted_sequence+=reverse_complement(info_df.loc[i[0],header]+sequence[i[1]] +sequence[i[2]])
-                extracted_sequences[header]= extracted_sequence
+        n+=1
+        print(n)
+        extracted_sequence=""
+        for i in codon:
+            if i[4]=='+':
+                if i[3]==0:
+                    extracted_sequence+=info_df.loc[i[0],header_it]+sequence[i[1]] +sequence[i[2]]
+                elif i[3]==1:
+                    extracted_sequence+=sequence[i[0]] + info_df.loc[i[1],header_it]+sequence[i[2]]
+                elif i[3]==2:  
+                    extracted_sequence+=sequence[i[0]] +sequence[i[1]]+ info_df.loc[i[2],header_it]
+            elif i[4]=='-':
+                if i[3]==0:
+                    extracted_sequence+=reverse_complement(sequence[i[0]] +sequence[i[1]]+ info_df.loc[i[2],header_it])
+                elif i[3]==1:
+                    extracted_sequence+=reverse_complement(sequence[i[0]] + info_df.loc[i[1],header_it]+sequence[i[2]])
+                elif i[3]==2:
+                    extracted_sequence+=reverse_complement(info_df.loc[i[0],header_it]+sequence[i[1]] +sequence[i[2]])
+            extracted_sequences[tranlation_headers[header_it]]= extracted_sequence
     os.makedirs(args.outdir, exist_ok=True)
     try:
         filename_codon = "{}{}_codon.fasta".format(args.outdir,os.path.splitext(os.path.basename(snp_align_path))[0])
@@ -218,9 +231,11 @@ if __name__ == '__main__':
         print("Output file {} cannot be created".format(filename_codon))
         sys.exit(1)
     # Write the extracted sequences to a new FASTA file
+    n=0
     for header, sequence in extracted_sequences.items():
         #print(header,sequence)
-
+        n+=1
+        print(n)
         #f_out.write(">{header}\n{sequence}\n".format(header,sequence))
         f_out.write(f'>{header}\n{sequence}\n')
     f_out.close()
