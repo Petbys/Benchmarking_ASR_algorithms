@@ -50,7 +50,7 @@ def make_annotation_dict(annotation_file_list):
                 Annotation_dict[match_geneid.group(1)] = [int(match_location.group(1))+3,int(match_location.group(2)),match_direction.group(),0,0]
             elif match_direction.group() == '-':
                 Annotation_dict[match_geneid.group(1)] = [int(match_location.group(1)),int(match_location.group(2))-3,match_direction.group(),0,0]
-    return annotation_dict
+    return Annotation_dict
 
 def get_sequence_lengths(sequence): # sequence parser
     #print(header)
