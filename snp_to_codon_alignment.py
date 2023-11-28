@@ -43,10 +43,13 @@ def make_annotation_dict(annotation_file_list):
     Annotation_dict={}
     for i in annotation_file_list:
         match_geneid = re.search(r'gene_id "([A-Za-z0-9_]+)"',i)
-        match_location = re.search(r'\tgene\t(\d+)\t(\d+)\t',i)
+        match_location = re.search(r'\tCDS\t(\d+)\t(\d+)\t',i)
         match_direction = re.search(r'(?<=\t\.\t)([\-\+])(?=\t\.)',i)
-        if match_geneid and match_location and match_direction:
-            Annotation_dict[match_geneid.group(1)] = [int(match_location.group(1)),int(match_location.group(2)),match_direction.group(1),0,0]
+        if match_geneid and match_location and match_direction: # Change CDS according to direction to get rid of stop codon
+            if match_direction == '+':
+                Annotation_dict[match_geneid.group(1)] = [int(match_location.group(1)),int(match_location.group(2)-3),match_direction.group(1),0,0]
+            elif match_direction == '-':
+                Annotation_dict[match_geneid.group(1)] = [int(match_location.group(1))+3,int(match_location.group(2)),match_direction.group(1),0,0]
     return Annotation_dict
 
 def get_sequence_lengths(sequence): # sequence parser
