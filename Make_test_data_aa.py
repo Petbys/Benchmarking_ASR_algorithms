@@ -1,5 +1,7 @@
 from Bio import SeqIO
 import argparse
+import os
+import sys
 
 def create_list_headers(headers):
     header_list = []
@@ -19,11 +21,16 @@ def create_fasta_from_headers(header_list, input_fasta_file, output_fasta_file):
             if len(sequences_to_write) == 10:
                 break
     print(header_list)
+    try:
+        filename = "10_first.fasta"
+        f_out = open(output_fasta_file +"/" + filename, 'w')
+    except IOError:
+        print("Output file {} cannot be created".format(filename))
+        sys.exit(1)
     # Write the sequences to a new FASTA file
-    with open(output_fasta_file, "w") as output_handle:
+    with open(filename, "w") as output_handle:
         SeqIO.write(sequences_to_write, output_handle, "fasta")
 
-    
 
 if __name__ == '__main__':
         parser = argparse.ArgumentParser(
