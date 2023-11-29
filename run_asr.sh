@@ -9,7 +9,7 @@
 #SBATCH --mail-user petter.bystrom.8041@student.uu.se
 
 module load conda
-module load paml
+module load paml/4.10.7
 pip install biopython
 pip install Pandas
 pip install PhyloPandas
