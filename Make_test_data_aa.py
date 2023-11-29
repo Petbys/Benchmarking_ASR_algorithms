@@ -7,7 +7,7 @@ def create_list_headers(headers):
     header_list = []
     with open(headers,"r") as headers:
         for header in headers:
-            header_list.append(header)
+            header_list.append(header.rstrip("\n"))
     return header_list
 
 def create_fasta_from_headers(header_list, input_fasta_file, output_fasta_file):
