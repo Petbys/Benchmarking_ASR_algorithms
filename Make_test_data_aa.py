@@ -38,7 +38,7 @@ def extract_sequences(headers, fasta_file, output_file):
                     extracted_sequences[current_header] = ''
             elif current_header in headers:
                 extracted_sequences[current_header] += line
-
+    print(extract_sequences)
     with open(output_file, 'w') as f_out:
         for header, sequence in extracted_sequences.items():
             sequence_10_positions = sequence[:10]
