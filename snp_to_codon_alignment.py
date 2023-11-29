@@ -215,18 +215,18 @@ if __name__ == '__main__':
         for i in codon:
             if i[4]=='+':
                 if i[3]==0:
-                    extracted_sequence+=info_df.loc[i[0],header_it]+sequence[i[1]] +sequence[i[2]]
+                    extracted_sequence+=info_df.loc[i[0],header_it]+sequence[i[1]-1] +sequence[i[2]-1]
                 elif i[3]==1:
-                    extracted_sequence+=sequence[i[0]] + info_df.loc[i[1],header_it]+sequence[i[2]]
+                    extracted_sequence+=sequence[i[0]-1] + info_df.loc[i[1],header_it]+sequence[i[2]-1]
                 elif i[3]==2:  
-                    extracted_sequence+=sequence[i[0]] +sequence[i[1]]+ info_df.loc[i[2],header_it]
+                    extracted_sequence+=sequence[i[0]-1] +sequence[i[1]-1]+ info_df.loc[i[2],header_it]
             elif i[4]=='-':
                 if i[3]==0:
-                    extracted_sequence+=reverse_complement(sequence[i[0]] +sequence[i[1]]+ info_df.loc[i[2],header_it])
+                    extracted_sequence+=reverse_complement(sequence[i[0]-1] +sequence[i[1]-1]+ info_df.loc[i[2],header_it])
                 elif i[3]==1:
-                    extracted_sequence+=reverse_complement(sequence[i[0]] + info_df.loc[i[1],header_it]+sequence[i[2]])
+                    extracted_sequence+=reverse_complement(sequence[i[0]-1] + info_df.loc[i[1],header_it]+sequence[i[2]-1])
                 elif i[3]==2:
-                    extracted_sequence+=reverse_complement(info_df.loc[i[0],header_it]+sequence[i[1]] +sequence[i[2]])
+                    extracted_sequence+=reverse_complement(info_df.loc[i[0],header_it]+sequence[i[1]-1] +sequence[i[2]-1])
             extracted_sequences[tranlation_headers[header_it]]= extracted_sequence
     os.makedirs(args.outdir, exist_ok=True)
     try:
