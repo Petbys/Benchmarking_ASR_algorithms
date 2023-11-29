@@ -31,6 +31,7 @@ def extract_sequences(headers, fasta_file, output_file):
     current_header = None
     with open(fasta_file, 'r') as fasta_file:
         for line in fasta_file:
+            print(line)
             line = line.strip()
             if line.startswith('>'):
                 current_header = line
