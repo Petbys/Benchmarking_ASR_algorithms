@@ -9,7 +9,7 @@ def create_list_headers(headers):
         for header in headers:
             header_list.append(header.rstrip("\n"))
     return header_list
-
+'''
 def create_fasta_from_headers(header_list, input_fasta_file, output_fasta_file):
     sequences_to_write = []
 
@@ -22,16 +22,27 @@ def create_fasta_from_headers(header_list, input_fasta_file, output_fasta_file):
             if len(sequences_to_write) == 10:
                 break
     print(header_list)
-    try:
-        filename = "10_first.fasta"
-        f_out = open(output_fasta_file +"/" + filename, 'w')
-    except IOError:
-        print("Output file {} cannot be created".format(filename))
-        sys.exit(1)
     # Write the sequences to a new FASTA file
-    with open(filename, "w") as output_handle:
+    with open(output_fasta_file, "w") as output_handle:
         SeqIO.write(sequences_to_write, output_handle, "fasta")
+'''
+def extract_sequences(headers, fasta_file, output_file):
+    extracted_sequences = {}
+    current_header = None
+    with open(fasta_file, 'r') as fasta_file:
+        for line in fasta_file:
+            line = line.strip()
+            if line.startswith('>'):
+                current_header = line
+                if current_header in headers:
+                    extracted_sequences[current_header] = ''
+            elif current_header in headers:
+                extracted_sequences[current_header] += line
 
+    with open(output_file, 'w') as f_out:
+        for header, sequence in extracted_sequences.items():
+            sequence_10_positions = sequence[:10]
+            f_out.write(f">{header}\n{sequence_10_positions}\n")
 
 if __name__ == '__main__':
         parser = argparse.ArgumentParser(
@@ -56,4 +67,4 @@ if __name__ == '__main__':
 
         header_list = create_list_headers(headers_path)
         print(header_list)
-        create_fasta_from_headers(header_list, fasta_path, output_path)
+        extract_sequences(header_list, fasta_path, output_path)
