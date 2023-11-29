@@ -25,7 +25,7 @@ def create_fasta_from_headers(header_list, input_fasta_file, output_fasta_file):
 
     
 
-    if __name__ == '__main__':
+if __name__ == '__main__':
         parser = argparse.ArgumentParser(
             description="testing pyasr")
         parser.add_argument(
