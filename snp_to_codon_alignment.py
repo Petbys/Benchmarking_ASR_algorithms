@@ -52,6 +52,8 @@ def make_annotation_dict(annotation_file_list):
                 Annotation_dict[match_geneid.group(1)] = [int(match_location.group(1)),int(match_location.group(2))-3,match_direction.group(),0,0]
     return Annotation_dict
 
+
+
 def get_sequence_lengths(sequence): # sequence parser
     #print(header)
     #for record in SeqIO.parse(fasta_file, "fasta"):
