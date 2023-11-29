@@ -1,5 +1,12 @@
 from Bio import SeqIO
 import argparse
+
+def create_list_headers(headers):
+    header_list = []
+    for record in SeqIO.parse(headers, "fasta"):
+        header_list.append(record.id)
+    return header_list
+
 def create_fasta_from_headers(header_list, input_fasta_file, output_fasta_file):
     sequences_to_write = []
 
@@ -16,6 +23,7 @@ def create_fasta_from_headers(header_list, input_fasta_file, output_fasta_file):
     with open(output_fasta_file, "w") as output_handle:
         SeqIO.write(sequences_to_write, output_handle, "fasta")
 
+    
 
     if __name__ == '__main__':
         parser = argparse.ArgumentParser(
@@ -38,5 +46,5 @@ def create_fasta_from_headers(header_list, input_fasta_file, output_fasta_file):
     headers_path = args.headers
     output_path = args.output
 
-
-    create_fasta_from_headers(headers_path, fasta_path, output_path)
+    header_list = create_list_headers(headers_path)
+    create_fasta_from_headers(header_list, fasta_path, output_path)
