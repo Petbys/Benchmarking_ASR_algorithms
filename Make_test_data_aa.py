@@ -41,10 +41,10 @@ def create_fasta_from_headers(header_list, input_fasta_file, output_fasta_file):
             required=True,
         )
 
-    args = parser.parse_args()
-    fasta_path= args.fasta
-    headers_path = args.headers
-    output_path = args.output
+        args = parser.parse_args()
+        fasta_path= args.fasta
+        headers_path = args.headers
+        output_path = args.output
 
-    header_list = create_list_headers(headers_path)
-    create_fasta_from_headers(header_list, fasta_path, output_path)
+        header_list = create_list_headers(headers_path)
+        create_fasta_from_headers(header_list, fasta_path, output_path)
