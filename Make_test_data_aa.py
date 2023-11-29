@@ -18,7 +18,7 @@ def create_fasta_from_headers(header_list, input_fasta_file, output_fasta_file):
             # Stop if 10 sequences have been found
             if len(sequences_to_write) == 10:
                 break
-
+    print(header_list)
     # Write the sequences to a new FASTA file
     with open(output_fasta_file, "w") as output_handle:
         SeqIO.write(sequences_to_write, output_handle, "fasta")
@@ -47,4 +47,5 @@ def create_fasta_from_headers(header_list, input_fasta_file, output_fasta_file):
         output_path = args.output
 
         header_list = create_list_headers(headers_path)
+        print(header_list)
         create_fasta_from_headers(header_list, fasta_path, output_path)
