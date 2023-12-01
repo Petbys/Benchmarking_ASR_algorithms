@@ -45,7 +45,8 @@ def make_annotation_dict(annotation_file_list):
         match_geneid = re.search(r'gene_id "([A-Za-z0-9_]+)"',i)
         match_location = re.search(r'\tCDS\t(\d+)\t(\d+)\t',i)
         match_direction = re.search(r'(?<=\t\.\t)[+-](?=\t0)',i)
-        if match_geneid and match_location and match_direction: 
+        genetype_pseudo = re.search(r'pseudo\s+"true"', i)
+        if match_geneid and match_location and match_direction and not genetype_pseudo: 
             if match_direction.group()== '+':
                 Annotation_dict[match_geneid.group(1)] = [int(match_location.group(1))+3,int(match_location.group(2)),match_direction.group(),0,0]
             elif match_direction.group() == '-':
@@ -168,6 +169,7 @@ if __name__ == '__main__':
     out_dir = args.outdir
     info_df = make_info_df(info_df_path,"Supp. table 14" )
     info_df = info_df.apply(lambda col: np.where(col == '.', info_df['CO92 Ref.'], col))
+    ref_snp = info_df['CO92 Ref.']
     info_df.drop('CO92 Ref.', axis=1, inplace=True) # not in alignment file
     info_df.drop('BSK001', axis=1, inplace=True) # combined into BSK001-003
     info_df.drop('BSK003', axis=1, inplace=True)  # combined into BSK001-003
