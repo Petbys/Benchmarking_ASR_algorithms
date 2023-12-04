@@ -3,7 +3,7 @@ import dendropy as d
 import pyasr
 import toytree
 import argparse
-
+import toyplot.pdf
 
 
 
@@ -42,10 +42,11 @@ if __name__ == '__main__':
 
     # Draw tree.
     tree_to_draw = toytree.tree(newick)
-    tree_to_draw.draw(width=400, height=400,
+    canvas, axes, mark = tree_to_draw.draw(width=400, height=400,
         tip_labels_align=True,
         use_edge_lengths=True,
         node_labels=True)
+    toyplot.pdf.render(canvas, "/tmp/tree-plot.pdf") 
 
     with open("output_aa.fasta", 'w') as output_file:
             output_file.write(tree_to_draw)
