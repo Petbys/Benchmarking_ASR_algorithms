@@ -17,4 +17,4 @@ pip install DendroPy
 pip install pyasr
 pip install toytree
 
-python pyasr_test.py
+python pyasr_test.py --fasta --tree --dir
