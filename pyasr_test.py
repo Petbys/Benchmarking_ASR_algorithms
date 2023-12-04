@@ -48,7 +48,4 @@ if __name__ == '__main__':
         node_labels=True)
     toyplot.pdf.render(canvas, "/tmp/tree-plot.pdf") 
 
-    with open("output_aa.fasta", 'w') as output_file:
-            output_file.write(tree_to_draw)
-            output_file.close()
 
