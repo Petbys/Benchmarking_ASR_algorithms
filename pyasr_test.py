@@ -35,6 +35,7 @@ if __name__ == '__main__':
 
     # Write out Ancestors CSV
     ancestors.to_csv('ancestors.csv')
+    
 
     # Preview some ancestors
     # Get a newick string to feed into ToyTree
