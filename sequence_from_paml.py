@@ -13,8 +13,8 @@ if start_index != -1 and end_index != -1:
     extracted_text = extracted_text.replace(' ', '')
 
 with open('reconstructed_ancestor_node67.fasta', 'w') as fasta_file:
-        fasta_file.write(f'>node67\n{extracted_text}\n')
-
+    fasta_file.write('>node67\n')
+    fasta_file.write(extracted_text + '\n')
 start_phrase = 'node #147'
 end_phrase = 'node #148'
 
@@ -27,4 +27,5 @@ if start_index != -1 and end_index != -1:
     extracted_text = extracted_text.replace(' ', '')
 
 with open('reconstructed_ancestor_node147.fasta', 'w') as fasta_file:
-        fasta_file.write(f'>node147\n{extracted_text}\n')
+    fasta_file.write('>node67\n')
+    fasta_file.write(extracted_text + '\n')
