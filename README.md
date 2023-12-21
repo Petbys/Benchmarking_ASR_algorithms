@@ -5,7 +5,7 @@ Benchmarking Ancestral Sequence Reconstruction algorithms with Ancient DNA
 ## protein coding sequences
 To benchmark the different algorithms over different datases, the data has to be in the same sequence space. As the main utility for ancestral sequence reconstruction lies in protein coding space the utilized data sets will be converted into protein coding space. 
 
-The _y. Sernia_ data sets consist of aligned snps between 250 different strains. To translate the snps into protein coding space, all corresponding codons to the snps are found using $snp_to_codon.py$. in this program the corresponding gene to each snp is found and based on its start, stop location and orientation the remaining codon bases are extracted from the reference genome to construct an codon alignment fasta file.
+The _y. pestis_ data sets consist of aligned snps between 250 different strains. To translate the snps into protein coding space, all corresponding codons to the snps are found using $snp_to_codon.py$. in this program the corresponding gene to each snp is found and based on its start, stop location and orientation the remaining codon bases are extracted from the reference genome to construct an codon alignment fasta file.
 
 Intital files:
 
@@ -22,9 +22,9 @@ Intital files:
 
 |Name|Function|Availability|Language|
 |--|--|--|--|
-|PAML||||
+|PAML|Marginal and joint likelihood reconstruction|||
 |FastML||||
-|ARPIP|ASR using Poisson Indel Process, reconstructing ancestral sequences based on indels |https://github.com/acg-team/bpp-ARPI|C++|
+|ARPIP|ASR using Poisson Indel Process, Joint likelihood reconstruction of ancestral sequences based on indel modeling |https://github.com/acg-team/bpp-ARPI|bash|
 
 ## Data Availability
 
@@ -46,3 +46,7 @@ Intital files:
 |AncientMetagenomeDir| Curated collection of all published data using shotgun metagenomics or microbial genomes|
 
 ### Bacteria
+|Species name|Amount|Format|Availability|
+|--|--|--|--|
+|Yersenia Pestis|252 individual|Fasta, snp alignment|Spurou et al 2022|
+
